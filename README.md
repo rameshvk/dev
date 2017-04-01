@@ -16,3 +16,5 @@ Dev configuration
 4. Open: https://github.com/settings/keys
 5. Paste new key.  Delete older keys
 6. Repeat for LFL
+7. Install git by downloading latest git.
+8. `git clone git@github.com:tj/n.git`
