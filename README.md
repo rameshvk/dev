@@ -7,6 +7,9 @@ Dev configuration
 2. Install iterm2
 3. iterm2 -> Preferences -> Color -> Presets -> Solarized Light
 4. iterm2 -> Preferences -> General -> Directory -> ~/code
+5. `curl https://raw.githubusercontent.com/rameshvk/dev/master/.bashrc > ~/.bashrc`
+6. `curl https://raw.githubusercontent.com/rameshvk/dev/master/.bash_profile > ~/.bash_profile`
+7. Open new terminal sessions
 
 ## Git and such
 
