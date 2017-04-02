@@ -10,6 +10,7 @@ Dev configuration
 5. `curl https://raw.githubusercontent.com/rameshvk/dev/master/.bashrc > ~/.bashrc`
 6. `curl https://raw.githubusercontent.com/rameshvk/dev/master/.bash_profile > ~/.bash_profile`
 7. Open new terminal sessions
+8. Download golang from [here](https://golang.org/dl/)
 
 ## Git and such
 
@@ -21,4 +22,5 @@ Dev configuration
 6. Repeat for LFL
 7. Install git by downloading latest git.
 8. `git clone git@github.com:tj/n.git`
-9. `cd n; PREFIX=~ make install`
+9. `cd n; make install`  <-- preferably read the makefile and run the shell commands manually
+10. `n latest`
