@@ -7,9 +7,6 @@ Dev configuration
 2. Install iterm2
 3. iterm2 -> Preferences -> Color -> Presets -> Solarized Light
 4. iterm2 -> Preferences -> General -> Directory -> ~/code
-5. `curl https://raw.githubusercontent.com/rameshvk/dev/master/.bashrc > ~/.bashrc`
-6. `curl https://raw.githubusercontent.com/rameshvk/dev/master/.bash_profile > ~/.bash_profile`
-7. Open new terminal sessions
 8. Download golang from [here](https://golang.org/dl/)
 
 ## Git and such
@@ -21,6 +18,7 @@ Dev configuration
 5. Paste new key.  Delete older keys
 6. Repeat for LFL
 7. Install git by downloading latest git.
-8. `git clone git@github.com:tj/n.git`
-9. `cd n; make install`  <-- preferably read the makefile and run the shell commands manually
-10. `n latest`
+8. `GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rv_rsa.pu" git clone git@github.com:rameshvk/dev.git`
+9. `cd git; . ./install.sh` <-- sets up bash profile and brings down n
+10. `cd n; make install`  <-- preferably read the makefile and run the shell commands manually
+11. `n latest`
