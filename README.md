@@ -21,3 +21,4 @@ Dev configuration
 6. Repeat for LFL
 7. Install git by downloading latest git.
 8. `git clone git@github.com:tj/n.git`
+9. `cd n; PREFIX=~ make install`
