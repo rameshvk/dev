@@ -15,7 +15,9 @@ cp .emacs ~/ &&
     git clone git@github.com:tj/n.git
   fi
 ) &&
-mkdir ~/dev/go
+mkdir ~/dev/go &&
+go get github.com/robertkrimen/godocdown/godocdown &&
+
 
 
 
