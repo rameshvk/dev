@@ -1,2 +1,5 @@
 (setq backup-directory-alist `(("." . "~/.saves")))
+(setq-default indent-tabs-mode nil)
 (transient-mark-mode 1)
+(add-to-list 'load-path "~/dev/emacs/")
+(require 'go-mode)
