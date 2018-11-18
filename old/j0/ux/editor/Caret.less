@@ -1,0 +1,26 @@
+.j0caret {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 0;
+  border-left: 2px solid red;
+  display: inline-block;
+}
+
+.j0caret.blink {
+  border-left-color: black;
+  animation: 400ms j0blink ease infinite alternate;
+}
+
+@keyframes j0blink {
+  from {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,109 @@
+<h1 id="the-furlang-language">The Furlang Language</h1>
+<p>Furlang aspires to be a fun modern functional immutable reactive language.  The philosophy behind the language can be described as follows:</p>
+<ol>
+<li>Modern: Leverage (not just accomodate) the fact that code lives in pieces on the internet.</li>
+<li>Simplicity of expression: Similar ideas should be expressed in similar ways. Functional code does not need esoteric syntax.</li>
+<li>Simplicity of semantics: Build small abstractions that work well together in unsurprising ways. Do not build abstractions to solve boiler-plate but attack boiler plate directly in the language.</li>
+</ol>
+<h2 id="basic-types">Basic types</h2>
+<ol>
+<li>Boolean</li>
+</ol>
+<p>A <em>Boolean</em> value can be <code>true or false</code> and nothing else. Two boolean values may be compared for equality and inequality (with <code>false</code> coming before <code>true</code>) and all logical operators.</p>
+<ul>
+<li><p>Caveat: Expressions with logical operations do not always get treated as a boolean result.  Both JS-style short-circuiting and partial expressions are allowed.  So, <code>a = 1 or 2</code> can mean <code>a = 1 or a = 2</code> or <code>a = 1 --or-- 2</code> or <code>a = 2</code>.  The meaning depends on the situation.</p>
+</li>
+<li><p>String</p>
+</li>
+</ul>
+<p>A <em>String</em> value is represented with double quotes, single quotes or back-ticks.  Standard unicode escape sequences are permitted.  Each type of quote also escapes the other types of quotes.  Strings are atomic and only support the basic concatenation, equality and set-like operations (contains/does-not-contain).</p>
+<p>No indexing of strings.</p>
+<ol>
+<li>Decimal</li>
+</ol>
+<p>A <em>Decimal</em> value can represent any decimal number (floating point or otherwise) up to a specified precision which matches IEEE spec on floating point numbers.  But decimals guarantee arithmetic is decimal oriented.  That is, <code>0.33333</code> is represented accurately as <code>0.33333</code>)</p>
+<ol>
+<li>Special numeric types</li>
+</ol>
+<p><em>Integer8, Integer16, Integer32 and Integer64</em> represent signed integers of that size. The unsigned variants are called <em>Byte8</em> etc.</p>
+<ol>
+<li>Records: Tuples and Hashes</li>
+</ol>
+<p>Records are a basic type.  There are two kinds of records: tuples or hashes.  Tuples are expressed as <code>Coordinates[x, y, z]</code>.  Here the order of the items matter.  Tuples can only have fixed size (i.e. all <code>Coordinate</code> values require the same number of elements).  Fields of a tuple can be accessed via the array notation <code>c[0]</code>.</p>
+<p>Hashes are expressed like so: <code>Coordinates{x: 22, y: 23, z: 8}</code>.  The order of the fields is not important for coordinates.  Field access is via the dot notation.  The set of fields in a record is fixed for a particular record.</p>
+<ol>
+<li>Declaring record types</li>
+</ol>
+<p>Record types are declared via the <code>record</code> keyword:  <code>record: Coordinates[x, y, z]</code> or <code>record: Coordinates{x, y, z}</code></p>
+<ol>
+<li>Common record tuples</li>
+</ol>
+<p>There is no explicit complex types or vector types.  Instead Number can be used as a tuple like so:  <code>Number[5, 5]</code>.  Note that a single-tuple number is effectively the same type as a regular number (this is also true for all scalars)</p>
+<ol>
+<li>Function types</li>
+</ol>
+<p>Function types can also be of <code>tuple</code> or <code>hash</code> form.  They are declared using the <code>function</code> keyword like so:</p>
+<pre><code>function: size[Coordinates{x, y, z}] = x * x + y * y + z * z
+function: distance{start, end} = start - end
+</code></pre><ol>
+<li>Function type coercion and type matching</li>
+</ol>
+<p>The return type of a function is automatically inferred and does not have to be provided.  Types can be explicitly cooerced like so:</p>
+<pre><code>function distance{start: Number[_], end: Number[_]} = Integer32[end - start]
+</code></pre><p>The function arguments are not strongly typed but type matching is used to force it to be strongly typed. The return value does use type coercion.</p>
+<ol>
+<li>Argument pattern matching</li>
+</ol>
+<p>Function definitions may use argument pattern matching a la Erlang:</p>
+<pre><code>function distance{start: Number{_}, end: Number{_}} = ....
+</code></pre><p>In the example above, the function body is only executed if the start/end expressions match the specified type (<code>Number</code> in this case) and the use of <code>_</code> is to indicate that the extracted value is not interesting.  If there is no match, the next expression with a match is looked for and if that matches, that is executed:</p>
+<pre><code>function distance{start: Number[_], end: Number[_]} = ....
+function distance{start: Number[_, _], end: Number[_, _]} = ....
+</code></pre><p>If no matches exist, it is an error (either runtime or compile time).</p>
+<p>Pattern matching with the tuple form can support the following:</p>
+<pre><code>function sum[a, b, c] = .... // no pattern matching
+function sum[Number[_], b, c] = ... // pattern matching but no access to first parameter
+function sum[a = Number[_], b, c] = .... // both pattern maching and access to field
+</code></pre><ol>
+<li>Varargs</li>
+</ol>
+<p>There are no varargs support because there is no support for tuples of unknown size or hashes of unknown name/values.  But would like to address this.</p>
+<ol>
+<li>Function chaining, dot notation</li>
+</ol>
+<p>Functions can be called with the regular prefix style or a chained style.</p>
+<pre><code>function sum[a, b, c] = a + b + c
+
+(4 + 22).sum(3, 5) // = 4 + 22 + 3 + 5
+</code></pre><p>Function chaining is a bit odd with hash-style functions but here is how it works:</p>
+<pre><code>function sum{a, b, c} = a + b + c
+(4 + 22).sum{a: 9, b, c: 5} // = 9 + (4 + 22) + 5
+</code></pre><p>That is, the function call still requires all parameters but one of the parameters can be omitted altogether.  Note that the hash key for that parameter is still required to disambiguate.</p>
+<ol>
+<li>Implicit function expressions</li>
+</ol>
+<p>The generic type matching expression <code>function[_, _, _]</code> will match any function that takes three parameters.  It will also accept any expression and treat it as if it were being passed args.</p>
+<p>Example:</p>
+<pre><code>function applyAndSum[a, b, c, fn = function[_]] = fn[a] + fn[b] + fn[c]
+applyAndSum[3, 4, 5, args * 2] //  = 6 + 8 + 10
+</code></pre><p>It looks better with named parameters:</p>
+<pre><code>function applyAndSum[a, b, c, fn = function{x}] = fn{x: a} + fn{x: b} + fn{x: c}
+applyAndSum[a, b, c, x * 2]
+</code></pre><ol>
+<li>Rewriting expressions</li>
+</ol>
+<p>Rewriting expressions are a simple way to provide some compile time help for special situations.  For instance, lets say we want to support for a data type for numeric quantities with an associated unit such as <code>10kilos</code>.  One way to do this is add support for a type called <code>Kilos[n: Number[_]]</code> but this may not play with
+standard way to avoid boilerplate. This is roughly like Macros in C except that the code to rewrite things is expressed in furlang itself and is actually run by the compiler.</p>
+<p>Consider the following example which rewrites all calls to <code>someFunction</code> with calls to <code>someOtherFunction</code> instead.</p>
+<pre><code>Compiler.rewrite{
+  match: FunctionCallExpression{name: &quot;someFunction&quot;, args: Args, details: Details}
+  replace: FunctionCallExpression{name: &quot;someOtherFunction&quot;, args: Args, details: Details}
+}
+</code></pre><p>The order of rewrite expressions is tricky and the following algorithm is expected: the virtual parse tree of the whole program is rewritten bottom up.  The rewrite rules themselves are not rewritten but if a rewrite generates completely new structures, they will pass through a rewrite phase as well. Rewrites can be roughly interepreted like the <code>bubble</code> phase of DOM events.</p>
+<p>Rewrite expressions can invoke other functions and such but these themselves won&#39;t be rewritten.</p>
+<p>Rewrite expressions can also change the grammar altogether by registering for specific regular expressions and returning a replacement string.</p>
+<pre><code>Compiler.rewrite{
+  pattern: &quot;++&quot;,
+  replace: &quot;+= 1&quot;
+}
+</code></pre><p>The pattern langauge is standard PCRE (say python).  The replacement is any expression and has access to the pattern data as args.  The rewrite rule happens fairly late (after all the other regular rewrite rules + type and scope info have been populated which provides this code access to the full type info/scope info)</p>

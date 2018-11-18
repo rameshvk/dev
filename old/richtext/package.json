@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+  },
+  "scripts": {
+    "build": "yarn webpack",
+    "server": "python -m SimpleHTTPServer 7676"
+  },
+  "jest": {
+    "testRegex": ".*_test.js"
+  },
+  "devDependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "webpack": "^2.2.1"
+  }
+}

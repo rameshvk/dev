@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>string.formatted.FormattedSegment</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/string.formatted.html">string.formatted</a></li>
+                                <li><a href="../classes/string.formatted.FormattedSegment.html">string.formatted.FormattedSegment</a></li>
+                                <li><a href="../classes/string.formatted.FormattedString.html">string.formatted.FormattedString</a></li>
+                                <li><a href="../classes/string.unicode.html">string.unicode</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>string.formatted.FormattedSegment Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/string_formatted_FormattedSegment.js.html#l7"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:7</code></a>
+        </div>
+
+
+</div>
+
+
+<div class="box intro">
+    <p>A formatted string consists of a sequence of formatted segments.
+Each segment is expected to have an unique id (one is generated if not provided)
+The flow mode is expected to capture the information on whether the segment is considered inline or block etc.
+The isAtomic flag is used to determine if it is expected to be treated as one block of object for editing purposes.
+The renderInfo is an opaque object that holds info on how to render this segment.</p>
+<p>This class is not sealed and it is acceptable for callers to override this and pass that to FormattedString.</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_string.formatted.FormattedSegment" class="method item">
+    <h3 class="name"><code>string.formatted.FormattedSegment</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l7"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:7</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_createEmbed">createEmbed</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_createTextSegment">createTextSegment</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_generateId">generateId</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_render">render</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_slice">slice</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_splice">splice</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toString">toString</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateStyles">updateStyles</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_createEmbed" class="method item">
+    <h3 class="name"><code>createEmbed</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l114"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:114</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates embedded (atomic) objects.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_createTextSegment" class="method item">
+    <h3 class="name"><code>createTextSegment</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l105"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:105</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates text segments.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_generateId" class="method item">
+    <h3 class="name"><code>generateId</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l97"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:97</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generates a unique id for use with this segment.  Derived classes can overrid this safely.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_render" class="method item">
+    <h3 class="name"><code>render</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l88"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:88</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Render the contents of this in the preferred mime type.
+This is a generic function that can be used to render text, HTML or even React.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_slice" class="method item">
+    <h3 class="name"><code>slice</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>end</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l45"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:45</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a new segment that holds a slice of the contents of this with the same rendering
+It is  an error to try to slice into an atomic segment.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">end</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_splice" class="method item">
+    <h3 class="name"><code>splice</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>deleteCount</code>
+                </li>
+                <li class="arg">
+                        <code>insertText</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l64"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:64</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Splices a piece of text into the current segment.  It is an error to splice into an atomic segment.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">deleteCount</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">insertText</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>note that this is not a var-args and cannot be any type other than string.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_toString" class="method item">
+    <h3 class="name"><code>toString</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l79"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:79</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts this segment to the string.  Derived classes can override this safely.
+Default implementation simply returns the text basis with a special character (✲) for atomic objects.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_updateStyles" class="method item">
+    <h3 class="name"><code>updateStyles</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>styleUpdator</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/string_formatted_FormattedSegment.js.html#l31"><code>string&#x2F;formatted&#x2F;FormattedSegment.js:31</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a new segment which has the updated styles.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">styleUpdator</code>
+                        <span class="type">Function | Object</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>if this is an object, it is merged into the current renderInfo.
+If a function is passed in as the styleUpdator param, it is called with the old renderInfo and is expected to return the new renderInfo.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>FormattedSegment or this if there is no update</p>
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+# The Furlang Language
+
+Furlang aspires to be a fun modern functional immutable reactive language.  The philosophy behind the language can be described as follows:
+
+1. Modern: Leverage (not just accomodate) the fact that code lives in pieces on the internet.
+2. Simplicity of expression: Similar ideas should be expressed in similar ways. Functional code does not need esoteric syntax.
+3. Simplicity of semantics: Build small abstractions that work well together in unsurprising ways. Do not build abstractions to solve boiler-plate but attack boiler plate directly in the language.
+
+## Basic types
+
+1. Boolean
+
+A *Boolean* value can be `true or false` and nothing else. Two boolean values may be compared for equality and inequality (with `false` coming before `true`) and all logical operators.
+
+- Caveat: Expressions with logical operations do not always get treated as a boolean result.  Both JS-style short-circuiting and partial expressions are allowed.  So, `a = 1 or 2` can mean `a = 1 or a = 2` or `a = 1 --or-- 2` or `a = 2`.  The meaning depends on the situation.
+
+2. String
+
+A *String* value is represented with double quotes, single quotes or back-ticks.  Standard unicode escape sequences are permitted.  Each type of quote also escapes the other types of quotes.  Strings are atomic and only support the basic concatenation, equality and set-like operations (contains/does-not-contain).
+
+No indexing of strings.
+
+2. Decimal
+
+A *Decimal* value can represent any decimal number (floating point or otherwise) up to a specified precision which matches IEEE spec on floating point numbers.  But decimals guarantee arithmetic is decimal oriented.  That is, `0.33333` is represented accurately as `0.33333`)
+
+3. Special numeric types
+
+*Integer8, Integer16, Integer32 and Integer64* represent signed integers of that size. The unsigned variants are called *Byte8* etc.
+
+4. Records: Tuples and Hashes
+
+Records are a basic type.  There are two kinds of records: tuples or hashes.  Tuples are expressed as `Coordinates[x, y, z]`.  Here the order of the items matter.  Tuples can only have fixed size (i.e. all `Coordinate` values require the same number of elements).  Fields of a tuple can be accessed via the array notation `c[0]`.
+
+Hashes are expressed like so: `Coordinates{x: 22, y: 23, z: 8}`.  The order of the fields is not important for coordinates.  Field access is via the dot notation.  The set of fields in a record is fixed for a particular record.
+
+5. Declaring record types
+
+Record types are declared via the `record` keyword:  `record: Coordinates[x, y, z]` or `record: Coordinates{x, y, z}`
+
+6. Common record tuples
+
+There is no explicit complex types or vector types.  Instead Number can be used as a tuple like so:  `Number[5, 5]`.  Note that a single-tuple number is effectively the same type as a regular number (this is also true for all scalars)
+
+6. Function types
+
+Function types can also be of `tuple` or `hash` form.  They are declared using the `function` keyword like so:
+
+```
+function: size[Coordinates{x, y, z}] = x * x + y * y + z * z
+function: distance{start, end} = start - end
+```
+
+7. Function type coercion and type matching
+
+The return type of a function is automatically inferred and does not have to be provided.  Types can be explicitly cooerced like so:
+
+```
+function distance{start: Number[_], end: Number[_]} = Integer32[end - start]
+```
+
+The function arguments are not strongly typed but type matching is used to force it to be strongly typed. The return value does use type coercion.
+
+
+8. Argument pattern matching
+
+Function definitions may use argument pattern matching a la Erlang:
+
+```
+function distance{start: Number{_}, end: Number{_}} = ....
+```
+
+In the example above, the function body is only executed if the start/end expressions match the specified type (`Number` in this case) and the use of `_` is to indicate that the extracted value is not interesting.  If there is no match, the next expression with a match is looked for and if that matches, that is executed:
+
+```
+function distance{start: Number[_], end: Number[_]} = ....
+function distance{start: Number[_, _], end: Number[_, _]} = ....
+```
+
+If no matches exist, it is an error (either runtime or compile time).
+
+Pattern matching with the tuple form can support the following:
+
+```
+function sum[a, b, c] = .... // no pattern matching
+function sum[Number[_], b, c] = ... // pattern matching but no access to first parameter
+function sum[a = Number[_], b, c] = .... // both pattern maching and access to field
+```
+
+9.  Varargs
+
+There are no varargs support because there is no support for tuples of unknown size or hashes of unknown name/values.  But would like to address this.
+
+
+10. Function chaining, dot notation
+
+Functions can be called with the regular prefix style or a chained style.
+
+```
+function sum[a, b, c] = a + b + c
+
+(4 + 22).sum(3, 5) // = 4 + 22 + 3 + 5
+```
+
+Function chaining is a bit odd with hash-style functions but here is how it works:
+
+```
+function sum{a, b, c} = a + b + c
+(4 + 22).sum{a: 9, b, c: 5} // = 9 + (4 + 22) + 5
+```
+
+That is, the function call still requires all parameters but one of the parameters can be omitted altogether.  Note that the hash key for that parameter is still required to disambiguate.
+
+11. Implicit function expressions
+
+
+The generic type matching expression `function[_, _, _]` will match any function that takes three parameters.  It will also accept any expression and treat it as if it were being passed args.
+
+Example:
+
+```
+function applyAndSum[a, b, c, fn = function[_]] = fn[a] + fn[b] + fn[c]
+applyAndSum[3, 4, 5, args * 2] //  = 6 + 8 + 10
+```
+
+It looks better with named parameters:
+
+```
+function applyAndSum[a, b, c, fn = function{x}] = fn{x: a} + fn{x: b} + fn{x: c}
+applyAndSum[a, b, c, x * 2]
+```
+
+12. Rewriting expressions
+
+Rewriting expressions are a simple way to provide some compile time help for special situations.  For instance, lets say we want to support for a data type for numeric quantities with an associated unit such as `10kilos`.  One way to do this is add support for a type called `Kilos[n: Number[_]]` but this may not play with
+standard way to avoid boilerplate. This is roughly like Macros in C except that the code to rewrite things is expressed in furlang itself and is actually run by the compiler.
+
+Consider the following example which rewrites all calls to `someFunction` with calls to `someOtherFunction` instead.
+
+```
+Compiler.rewrite{
+  match: FunctionCallExpression{name: "someFunction", args: Args, details: Details}
+  replace: FunctionCallExpression{name: "someOtherFunction", args: Args, details: Details}
+}
+```
+
+The order of rewrite expressions is tricky and the following algorithm is expected: the virtual parse tree of the whole program is rewritten bottom up.  The rewrite rules themselves are not rewritten but if a rewrite generates completely new structures, they will pass through a rewrite phase as well. Rewrites can be roughly interepreted like the `bubble` phase of DOM events.
+
+Rewrite expressions can invoke other functions and such but these themselves won't be rewritten.
+
+Rewrite expressions can also change the grammar altogether by registering for specific regular expressions and returning a replacement string.
+
+```
+Compiler.rewrite{
+  pattern: "++",
+  replace: "+= 1"
+}
+```
+
+The pattern langauge is standard PCRE (say python).  The replacement is any expression and has access to the pattern data as args.  The rewrite rule happens fairly late (after all the other regular rewrite rules + type and scope info have been populated which provides this code access to the full type info/scope info)

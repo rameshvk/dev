@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Furlang Parser Demo</title>
+    <style>
+      html, head, body { width: 100%; height: 100%; margin: 0; padding: 0; border: 0; }
+      body {
+        background: rgb(220, 220, 200);
+        color: rgb(80, 80, 80);
+        font-family: helvetica, sans-serif;
+      }
+      #root {
+        height: 100%;
+        font-size: 12px;
+      }
+      textarea {
+        display: inline-block;
+        border: 0;
+        padding: 10px;
+        box-sizing: border-box;
+        width: 40%;
+        min-height: 50%;
+        border: 2px solid black;
+        outline: none;
+        box-shadow: none;
+        background: rgb(240, 240, 220);
+      }
+      .results-pane {
+        display: inline-block;
+        background: rgb(230, 230, 210);
+        width: 40%;
+        min-height: 50%;
+        border: 1px solid black;
+        overflow: auto;
+        box-sizing: border-box;
+        vertical-align: top;
+      }
+      .results-pane h1 {
+        font-size: 16px;
+        margin: 0;
+        margin-bottom: 5px;
+        background: rgb(200, 200, 180);
+      }
+      .results-pane > * { padding: 5px; }
+      textarea:focus { border: 2px solid blue; }
+      button {outline: none; }
+      a { text-decoration: none; }
+      .inline-error:before {
+        position: relative;
+        top: -0.5em;
+        font-size: 70%;
+        color: red;
+        content: attr(data-count);
+      }
+      .error-legend {
+        font-size: 70%;
+        margin-left: 5px;
+        color: red;
+      }
+      .folded, .unfolded {
+        color: green;
+        cursor: pointer;
+      }
+      .folded:before { content: '"'; opacity: 0.6; }
+      .folded:after { content: '"'; opacity: 0.6; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+    </div>
+    <script src="./demo.bundle.js"></script>
+  </body>
+</html>

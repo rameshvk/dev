@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>string/formatted/FormattedSegment.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/string.formatted.html">string.formatted</a></li>
+                                <li><a href="../classes/string.formatted.FormattedSegment.html">string.formatted.FormattedSegment</a></li>
+                                <li><a href="../classes/string.formatted.FormattedString.html">string.formatted.FormattedString</a></li>
+                                <li><a href="../classes/string.unicode.html">string.unicode</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: string/formatted/FormattedSegment.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+const AtomicText = &#x27;✲&#x27;;
+const Empty = {};
+
+export default class FormattedSegment {
+  /**
+   * A formatted string consists of a sequence of formatted segments.
+   * Each segment is expected to have an unique id (one is generated if not provided)
+   * The flow mode is expected to capture the information on whether the segment is considered inline or block etc.
+   * The isAtomic flag is used to determine if it is expected to be treated as one block of object for editing purposes.
+   * The renderInfo is an opaque object that holds info on how to render this segment.
+   *
+   * This class is not sealed and it is acceptable for callers to override this and pass that to FormattedString.
+   * @namespace string.formatted
+   * @class FormattedSegment
+   * @constructor
+   */
+  constructor({id=this.generateId(), text=&#x27;&#x27;, renderInfo=Empty, flowMode, isAtomic=false}) {
+    this.id = id;
+    this.text = text;
+    this.flowMode = flowMode;
+    this.isAtomic = isAtomic;
+    this.renderInfo = renderInfo;
+    if (isAtomic &amp;&amp; !text) {
+      this.text = AtomicText;
+    }
+    this.count = this.text.length;
+  }
+
+  /**
+   * Returns a new segment which has the updated styles.
+   * @method updateStyles
+   * @param {Function|Object} styleUpdator - if this is an object, it is merged into the current renderInfo.
+   * If a function is passed in as the styleUpdator param, it is called with the old renderInfo and is expected to return the new renderInfo.
+   * @return FormattedSegment or this if there is no update
+   */
+  updateStyles(styleUpdator) {
+    const updator = typeof styleUpdator == &#x27;object&#x27; ? old =&gt; Object.assign({}, old, styleUpdator) : styleUpdator;
+    const renderInfo = updator(this.renderInfo, this);
+    if (renderInfo === this.renderInfo) return this;
+    return new this.constructor({text: this.text, flowMode: this.flowMode, isAtomic: this.isAtomic, renderInfo});
+  }
+
+  /**
+   * Returns a new segment that holds a slice of the contents of this with the same rendering
+   * It is  an error to try to slice into an atomic segment.
+   * @method slice
+   * @param {Number} start
+   * @param {Number} end
+   */
+  slice(start, end) {
+    const min = Math.max(0, Math.min(start, end, this.count));
+    const max = Math.min(this.count, Math.max(start, end, 0));
+    if (min === 0 &amp;&amp; max === this.count) return this;
+    if (this.isAtomic) throw new Error(&#x27;Cannot slice atomic entries&#x27;);
+
+    const text = this.text.slice(min, max);
+    const flowMode = this.flowMode;
+    const isAtomic = this.isAtomic;
+    return new this.constructor({text, renderInfo: this.renderInfo, flowMode, isAtomic});
+  }
+
+  /**
+   * Splices a piece of text into the current segment.  It is an error to splice into an atomic segment.
+   * @method splice
+   * @param {Number} start
+   * @param {Number} deleteCount
+   * @param {String} insertText - note that this is not a var-args and cannot be any type other than string.
+   */
+  splice(start, deleteCount, insertText=&#x27;&#x27;) {
+    if (this.isAtomic) throw new Error(&#x27;Cannot splice into atomic segments&#x27;);
+    const text = this.text.slice(0, start) + insertText + this.text.slice(start + deleteCount);
+    const flowMode = this.flowMode;
+    const isAtomic = this.isAtomic;
+    return new this.constructor({text, renderInfo: this.renderInfo, flowMode, isAtomic});
+  }
+
+  /**
+   * Converts this segment to the string.  Derived classes can override this safely.
+   * Default implementation simply returns the text basis with a special character (✲) for atomic objects.
+   * @method toString
+   */
+  toString() {
+    return this.text;
+  }
+
+  /**
+   * Render the contents of this in the preferred mime type.
+   * This is a generic function that can be used to render text, HTML or even React.
+   * @method render
+   */
+  render(context, mimeType=&#x27;text/plain&#x27;) {
+    if (mimeType === &#x27;text/plain&#x27;) return this.toString();
+  }
+
+  /**
+   * Generates a unique id for use with this segment.  Derived classes can overrid this safely.
+   * @method generateId
+   */
+  generateId() {
+    return&#x27;id&#x27; + Date.now().toString() + Math.floor(Math.random(1000)).toString();
+  }
+
+  /**
+   * Creates text segments.
+   * @method createTextSegment
+   * @static
+   */
+  static createTextSegment(text, renderInfo) {
+    return new this({text, renderInfo});
+  }
+
+  /**
+   * Creates embedded (atomic) objects.
+   * @method createEmbed
+   * @static
+   */
+  static createEmbed(flowMode, renderInfo) {
+    return new this({text: AtomicText, flowMode, renderInfo});
+  }
+};
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

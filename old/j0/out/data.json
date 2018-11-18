@@ -1,0 +1,451 @@
+{
+    "project": {},
+    "files": {
+        "string/formatted/FormattedSegment.js": {
+            "name": "string/formatted/FormattedSegment.js",
+            "modules": {},
+            "classes": {
+                "string.formatted.FormattedSegment": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "string.formatted": 1
+            }
+        },
+        "string/formatted/FormattedString.js": {
+            "name": "string/formatted/FormattedString.js",
+            "modules": {},
+            "classes": {
+                "string.formatted": 1,
+                "string.formatted.FormattedString": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "string": 1,
+                "string.formatted": 1
+            }
+        },
+        "string/unicode.js": {
+            "name": "string/unicode.js",
+            "modules": {},
+            "classes": {
+                "string.unicode": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "string": 1
+            }
+        }
+    },
+    "modules": {},
+    "classes": {
+        "string.formatted.FormattedSegment": {
+            "name": "string.formatted.FormattedSegment",
+            "shortname": "string.formatted.FormattedSegment",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "string.formatted",
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 7,
+            "description": "A formatted string consists of a sequence of formatted segments.\nEach segment is expected to have an unique id (one is generated if not provided)\nThe flow mode is expected to capture the information on whether the segment is considered inline or block etc.\nThe isAtomic flag is used to determine if it is expected to be treated as one block of object for editing purposes.\nThe renderInfo is an opaque object that holds info on how to render this segment.\n\nThis class is not sealed and it is acceptable for callers to override this and pass that to FormattedString.",
+            "is_constructor": 1
+        },
+        "string.formatted": {
+            "name": "string.formatted",
+            "shortname": "string.formatted",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "string.formatted",
+            "file": "string/formatted/FormattedString.js",
+            "line": 15
+        },
+        "string.formatted.FormattedString": {
+            "name": "string.formatted.FormattedString",
+            "shortname": "string.formatted.FormattedString",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "string.formatted",
+            "file": "string/formatted/FormattedString.js",
+            "line": 30,
+            "description": "Represents a formatted string.  It is implemented as a sequence of FormattedSegment objects.\nThis is a base class and contains no actual awareness of rendering beyond simple text rendering.\nThis class is immutable -- all mutation methods return a different object without modifying the current object.",
+            "params": [
+                {
+                    "name": "someType",
+                    "description": "",
+                    "type": "String|FormattedString|[string|FormattedSegment]"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "string.unicode": {
+            "name": "string.unicode",
+            "shortname": "string.unicode",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "string",
+            "file": "string/unicode.js",
+            "line": 3,
+            "description": "Static unicode helpers",
+            "static": 1
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 31,
+            "description": "Returns a new segment which has the updated styles.",
+            "itemtype": "method",
+            "name": "updateStyles",
+            "params": [
+                {
+                    "name": "styleUpdator",
+                    "description": "- if this is an object, it is merged into the current renderInfo.\nIf a function is passed in as the styleUpdator param, it is called with the old renderInfo and is expected to return the new renderInfo.",
+                    "type": "Function|Object"
+                }
+            ],
+            "return": {
+                "description": "FormattedSegment or this if there is no update"
+            },
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 45,
+            "description": "Returns a new segment that holds a slice of the contents of this with the same rendering\nIt is  an error to try to slice into an atomic segment.",
+            "itemtype": "method",
+            "name": "slice",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "end",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 64,
+            "description": "Splices a piece of text into the current segment.  It is an error to splice into an atomic segment.",
+            "itemtype": "method",
+            "name": "splice",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "deleteCount",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "insertText",
+                    "description": "- note that this is not a var-args and cannot be any type other than string.",
+                    "type": "String"
+                }
+            ],
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 79,
+            "description": "Converts this segment to the string.  Derived classes can override this safely.\nDefault implementation simply returns the text basis with a special character (✲) for atomic objects.",
+            "itemtype": "method",
+            "name": "toString",
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 88,
+            "description": "Render the contents of this in the preferred mime type.\nThis is a generic function that can be used to render text, HTML or even React.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 97,
+            "description": "Generates a unique id for use with this segment.  Derived classes can overrid this safely.",
+            "itemtype": "method",
+            "name": "generateId",
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 105,
+            "description": "Creates text segments.",
+            "itemtype": "method",
+            "name": "createTextSegment",
+            "static": 1,
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedSegment.js",
+            "line": 114,
+            "description": "Creates embedded (atomic) objects.",
+            "itemtype": "method",
+            "name": "createEmbed",
+            "static": 1,
+            "class": "string.formatted.FormattedSegment",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 20,
+            "description": "Build a FormattedString class based on the provided FormattedSegmentClass.\nFor the default FormattedString class, just use string.formatted.FormattedString",
+            "itemtype": "method",
+            "name": "createFormattedStringClass",
+            "params": [
+                {
+                    "name": "-",
+                    "description": "FormattedSegmentClass - the class to use as the basis for FormattedString",
+                    "type": "FormattedSegment"
+                }
+            ],
+            "return": {
+                "description": "- typed to provided FormattedSegment implementation",
+                "type": "FormattedString"
+            },
+            "static": 1,
+            "class": "string.formatted",
+            "namespace": "string"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 52,
+            "description": "Append a bunch of other formatted strings together and return a new value.",
+            "itemtype": "method",
+            "name": "append",
+            "params": [
+                {
+                    "name": "others",
+                    "description": "- any value that can be provided as a param to the constructor is acceptable here.",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "FormattedString"
+            },
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 66,
+            "description": "Slice a section of the formatted string.  Note that negative values are not allowed as parameters.",
+            "itemtype": "method",
+            "name": "slice",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "end",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "FormattedString"
+            },
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 86,
+            "description": "Works similar to Array:Splice except this does not mutate the FormattedString.",
+            "itemtype": "method",
+            "name": "splice",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "- cannot be negative",
+                    "type": "Number"
+                },
+                {
+                    "name": "end",
+                    "description": "- cannot be negative",
+                    "type": "Number"
+                },
+                {
+                    "name": "inserts",
+                    "description": "- can be any type that is acceptable in the constructor",
+                    "type": "...Any"
+                }
+            ],
+            "return": {
+                "description": "hash of {spliced, sliced} both of which are FormattedString",
+                "type": "Object"
+            },
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 105,
+            "description": "Update the styles for the whole formatted string based on the updator provided.  The updator is applied on all segments.",
+            "itemtype": "method",
+            "name": "updateStyle",
+            "params": [
+                {
+                    "name": "updator",
+                    "description": "- a function that maps the old renderInfo to the new or a hash that needs to be merged with the old renderInfo",
+                    "type": "Function|Object"
+                }
+            ],
+            "return": {
+                "description": "FormattedString"
+            },
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 128,
+            "description": "Similar to updateStyle but only applies to the specified range.",
+            "itemtype": "method",
+            "name": "applyStyle",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "updator",
+                    "description": "- see updateStyle",
+                    "type": "Function|Object"
+                }
+            ],
+            "return": {
+                "description": "FormattedString"
+            },
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 163,
+            "description": "Equality check to see if the two segments will get rendered with the same styles.\nBy default, this is implemented with a shallow comparison of the renderInfo values.\nDerived classes may override this however.",
+            "itemtype": "method",
+            "name": "areSegmentsSameKind",
+            "params": [
+                {
+                    "name": "seg1",
+                    "description": "",
+                    "type": "FormattedSegment"
+                },
+                {
+                    "name": "seg2",
+                    "description": "",
+                    "type": "FormattedSegment"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 179,
+            "description": "Convert the whole formatted string to a simple string.\nUses FormattedSegment:toString.",
+            "itemtype": "method",
+            "name": "toString",
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/formatted/FormattedString.js",
+            "line": 188,
+            "description": "Render the contents of this in the preferred mime type.\nThis is a generic function that can be used to render text, HTML or even React.\nNote that for text/* types, it simply renders the individual segments and combines them.\nFor all other types, it returns the array of individually rendered segments.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "string.formatted.FormattedString",
+            "namespace": "string.formatted"
+        },
+        {
+            "file": "string/unicode.js",
+            "line": 10,
+            "description": "Unicode is a bitch.  While JS uses utf16 characters, it is still possible to\nhave encoded values of multiple UTF-16 characters to represent a user character.\nThis function tries to unravel this mystery.\nThis is somewhat similar to ES6 codePointAt.\nSee the polyfill here: https://developer.mozilla.org/cs/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt\nIt does a poor job though.\nThere are things like variant-selectors which take multiple code points.\nFor any decent UX app, these need to be considered together as one character.",
+            "itemtype": "method",
+            "name": "getLengthAt",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "index",
+                    "description": "- negative values are not supported",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "- 1-4 right now",
+                "type": "Number"
+            },
+            "class": "string.unicode",
+            "namespace": "string"
+        },
+        {
+            "file": "string/unicode.js",
+            "line": 47,
+            "description": "See getLengthAt.  Here is a sloppy but current implementation which relies on the fact that\nunicode is atmost 4 JS characters long.  Atleast as of now.  Until the next Unicode spec, I guess.",
+            "itemtype": "method",
+            "name": "getLengthBefore",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "index",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "string.unicode",
+            "namespace": "string"
+        }
+    ],
+    "warnings": []
+}

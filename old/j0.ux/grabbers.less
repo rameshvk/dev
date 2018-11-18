@@ -1,0 +1,63 @@
+@import "elements.less";
+
+@grabber-background: rgb(200, 200, 200);
+@grabber-text: rgb(100, 100, 100);
+@grabber-active-background: rgb(150, 150, 150);
+@grabber-active-text: rgb(230, 230, 230);
+
+.grabber {
+  display: inline-block;
+  position: absolute;
+
+  width: 0.9em;
+  text-align: center;
+  line-height: 0.6em;
+  top: -0.3em;
+  font-size: 2em;
+
+  background: @grabber-background;
+  color: @grabber-text;
+  .user-select;
+  cursor: ew-resize;
+  > .tooltip { display: none; }
+}
+
+.grabber.left {
+  right: 0;
+  border-top-left-radius: 30%;
+  border-bottom-left-radius: 30%;
+}
+
+.grabber.right {
+  left: 0;
+  border-top-right-radius: 30%;
+  border-bottom-right-radius: 30%;
+}
+
+.grabber.center {
+  left: -0.45em;
+  border-radius: 20%;
+}
+
+.grabber:active {
+  background: @grabber-active-background;
+  color: @grabber-active-text;
+  > .tooltip { display: inline; position: relative; }
+}
+
+.grabber.block {
+  top: -0.3em;
+  width: 0.3em;
+  height: 0.6em;
+  border-radius: 0;
+}
+
+.grabber.block.left {
+  right: 0;
+}
+.grabber.block.right {
+  left: 0;
+}
+.grabber.block.center {
+  left: -0.15em;
+}
