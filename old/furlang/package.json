@@ -18,7 +18,7 @@
     "is-arrayish": "^0.3.1",
     "jest": "^18.1.0",
     "longest": "^1.0.1",
-    "minimist": "0.0.8",
+    "minimist": "1.2.5",
     "pegjs": "^0.10.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
